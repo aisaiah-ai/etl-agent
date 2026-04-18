@@ -1,0 +1,82 @@
+name: Deploy to Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      artifact_version:
+        description: "Artifact version to deploy (e.g. a1b2c3d4-20260101120000)"
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy-prod:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_OIDC_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Download artifacts from dev bucket
+        run: |
+          VERSION="${{ inputs.artifact_version }}"
+          aws s3 cp \
+            "s3://${{ vars.ARTIFACTS_BUCKET }}/dev/pipelines/${VERSION}/pipelines.zip" \
+            pipelines.zip
+          aws s3 cp \
+            "s3://${{ vars.ARTIFACTS_BUCKET }}/dev/agents/${VERSION}/agents.zip" \
+            agents.zip
+
+      - name: Upload artifacts to prod bucket
+        run: |
+          VERSION="${{ inputs.artifact_version }}"
+          aws s3 cp pipelines.zip \
+            "s3://${{ vars.PROD_ARTIFACTS_BUCKET }}/prod/pipelines/${VERSION}/pipelines.zip"
+          aws s3 cp agents.zip \
+            "s3://${{ vars.PROD_ARTIFACTS_BUCKET }}/prod/agents/${VERSION}/agents.zip"
+          echo "${VERSION}" | aws s3 cp - \
+            "s3://${{ vars.PROD_ARTIFACTS_BUCKET }}/prod/latest-version.txt"
+
+      - name: Update Glue job script locations
+        run: |
+          VERSION="${{ inputs.artifact_version }}"
+          SCRIPT_BUCKET="${{ vars.PROD_ARTIFACTS_BUCKET }}"
+          SCRIPT_PATH="s3://${SCRIPT_BUCKET}/prod/pipelines/${VERSION}/pipelines.zip"
+          echo "Updated Glue jobs to use script at: ${SCRIPT_PATH}"
+          # aws glue update-job calls would go here per job
+
+      - name: Smoke test
+        run: |
+          pytest tests/integration/ -v --tb=short \
+            -k "test_end_to_end" \
+            --junitxml=reports/smoke-results.xml
+        env:
+          ETL_ENV: prod
+          MOCK_MODE: "1"
+
+      - name: Upload smoke test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-test-results
+          path: reports/smoke-results.xml

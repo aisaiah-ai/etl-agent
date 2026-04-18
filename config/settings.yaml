@@ -1,0 +1,56 @@
+# ETL Agent Configuration
+project_name: etl-agent
+version: "0.1.0"
+
+redshift:
+  host: "${REDSHIFT_HOST}"
+  port: 5439
+  database: "${REDSHIFT_DATABASE}"
+  schema: "financial_hist"
+  target_views: []
+
+glue:
+  database_name: "financial_hist_ext"
+  job_role_name: "etl-agent-dev-glue-execution"
+  script_bucket: "${GLUE_SCRIPT_BUCKET}"
+  worker_type: "G.1X"
+  number_of_workers: 2
+  glue_version: "4.0"
+  python_version: "3"
+  timeout_minutes: 60
+  connection_name: "etl-agent-dev-redshift"
+  redshift_tmp_dir: "s3://${ETL_ARTIFACTS_BUCKET}/redshift-tmp/"
+  source_read_mode: "catalog"
+
+discovery:
+  bedrock_model_id: "anthropic.claude-sonnet-4-6-20250514"
+  bedrock_region: "us-east-1"
+  resolve_external_tables: true
+  max_tables_per_run: 50
+
+step_functions:
+  state_machine_name: "etl-agent-dev-pipeline"
+  execution_timeout_seconds: 3600
+
+s3:
+  data_bucket: "${ETL_DATA_BUCKET}"
+  artifacts_bucket: "${ETL_ARTIFACTS_BUCKET}"
+  output_prefix: "output/"
+
+environments:
+  dev:
+    redshift_host: "etl-agent-dev-wg.533267300255.us-east-1.redshift-serverless.amazonaws.com"
+    redshift_database: "etl_agent_db"
+    redshift_user: "admin"
+    redshift_schema: "financial_hist"
+    glue_database: "financial_hist_ext"
+    data_bucket: "etl-agent-data-dev"
+    artifacts_bucket: "etl-agent-artifacts-dev"
+  prod:
+    redshift_host: "prod-redshift.442594162630.us-east-1.redshift-serverless.amazonaws.com"
+    redshift_database: "dev"
+    redshift_user: "iesadmin"
+    redshift_schema: "financial_hist"
+    glue_database: "financial_hist_ext"
+    data_bucket: "ies-devteam-prd"
+    artifacts_bucket: "aws-glue-assets-442594162630-us-east-1"

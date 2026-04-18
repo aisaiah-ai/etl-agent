@@ -1,0 +1,37 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.venv/
+venv/
+.env
+*.env.local
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfplan
+.terraform.lock.hcl
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Output
+output/
+*.parquet
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Meeting notes
+instructor_deactivation_meeting_anh.docx
+meeting_notes_instructor_deactivation.md

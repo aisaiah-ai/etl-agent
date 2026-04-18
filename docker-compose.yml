@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  # PostgreSQL stands in for Redshift locally — wire-compatible for SQL queries
+  redshift-local:
+    image: postgres:15
+    container_name: etl-agent-redshift
+    ports:
+      - "5439:5432"
+    environment:
+      POSTGRES_DB: etl_agent_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: local_dev_password
+    volumes:
+      - redshift_data:/var/lib/postgresql/data
+      - ./scripts/seed_redshift.sql:/docker-entrypoint-initdb.d/01_seed.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d etl_agent_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # LocalStack for Glue catalog, S3, Step Functions
+  localstack:
+    image: localstack/localstack:3.4
+    container_name: etl-agent-localstack
+    ports:
+      - "4566:4566"
+    environment:
+      SERVICES: glue,s3,stepfunctions,sts
+      DEFAULT_REGION: us-east-1
+      EAGER_SERVICE_LOADING: 1
+    volumes:
+      - localstack_data:/var/lib/localstack
+      - ./scripts/seed_localstack.sh:/etc/localstack/init/ready.d/seed.sh
+
+volumes:
+  redshift_data:
+  localstack_data:

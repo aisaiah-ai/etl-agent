@@ -1,0 +1,85 @@
+table_name,column_name,data_type,character_maximum_length,numeric_precision,numeric_scale,ordinal_position
+bookdisplaytypeindex,bookname,character varying,16383,NULL,NULL,1
+bookdisplaytypeindex,booktype,character varying,6,NULL,NULL,2
+bookdisplaytypeindex,fiscalgroupname,character varying,16383,NULL,NULL,3
+bookdisplaytypeindex,bookindex,bigint,NULL,64,0,4
+forecastenrollment,book,character varying,16383,NULL,NULL,1
+forecastenrollment,gl_program_cd,character varying,16383,NULL,NULL,2
+forecastenrollment,gp_db_name,character varying,16383,NULL,NULL,3
+forecastenrollment,term_cd,character varying,16383,NULL,NULL,4
+forecastenrollment,fiscal_year_label,character varying,16383,NULL,NULL,5
+forecastenrollment,nbr_non_discount_students,integer,NULL,32,0,6
+forecastenrollment,nbr_discount_students,integer,NULL,32,0,7
+forecastenrollment,program groupings key,character varying,32767,NULL,NULL,8
+forecastenrollmenttotals,revision_label,character varying,16383,NULL,NULL,1
+forecastenrollmenttotals,gl_program_cd,character varying,16383,NULL,NULL,2
+forecastenrollmenttotals,gp_db_name,character varying,16383,NULL,NULL,3
+forecastenrollmenttotals,fiscal_year_label,character varying,16383,NULL,NULL,4
+forecastenrollmenttotals,summer head count,bigint,NULL,64,0,5
+forecastenrollmenttotals,fall head count,bigint,NULL,64,0,6
+forecastenrollmenttotals,ay head count,bigint,NULL,64,0,7
+forecastenrollmenttotals,spring head count,bigint,NULL,64,0,8
+forecastenrollmenttotals,total head count,bigint,NULL,64,0,9
+forecastenrollmenttotals,program groupings key,text,NULL,NULL,NULL,10
+fx_book_rates,currency_code,character varying,16383,NULL,NULL,1
+fx_book_rates,currency_per_usd,numeric,NULL,18,12,2
+fx_book_rates,revision_label,character varying,16383,NULL,NULL,3
+fx_book_rates,fiscal_year_id,integer,NULL,32,0,4
+fx_book_rates,fiscal_year_label,character varying,16383,NULL,NULL,5
+fx_book_rates,begin_date,timestamp without time zone,NULL,NULL,NULL,6
+fx_book_rates,default_book,integer,NULL,32,0,7
+fx_rates_hist,ratetype,character varying,16383,NULL,NULL,1
+fx_rates_hist,nacntr,character varying,16383,NULL,NULL,2
+fx_rates_hist,curncyid,character varying,16383,NULL,NULL,3
+fx_rates_hist,rtclcmtd,character varying,16383,NULL,NULL,4
+fx_rates_hist,xchgrate,double precision,NULL,53,NULL,5
+fx_rates_hist,effxchgrate,double precision,NULL,53,NULL,6
+fx_rates_hist,exchdate,character varying,16383,NULL,NULL,7
+fx_rates_hist,expndate,character varying,16383,NULL,NULL,8
+fx_rates_hist,periodid,integer,NULL,32,0,9
+fx_rates_hist,year1,integer,NULL,32,0,10
+historic_all_financial_transactions,gp_db_name,character varying,16383,NULL,NULL,1
+historic_all_financial_transactions,period,integer,NULL,32,0,2
+historic_all_financial_transactions,fnccur,character varying,16383,NULL,NULL,3
+historic_all_financial_transactions,transaction_datetime,timestamp without time zone,NULL,NULL,NULL,4
+historic_all_financial_transactions,description_long,character varying,16383,NULL,NULL,5
+historic_all_financial_transactions,vendor_name,character varying,16383,NULL,NULL,6
+historic_all_financial_transactions,book,character varying,16383,NULL,NULL,7
+historic_all_financial_transactions,center,character varying,16383,NULL,NULL,8
+historic_all_financial_transactions,ctrcur,character varying,16383,NULL,NULL,9
+historic_all_financial_transactions,amount_in_fnc_cur,numeric,NULL,23,5,10
+historic_all_financial_transactions,account_type,character varying,16383,NULL,NULL,11
+historic_all_financial_transactions,acct_cat_per_accounting,character varying,16383,NULL,NULL,12
+historic_all_financial_transactions,deptcd,character varying,16383,NULL,NULL,13
+historic_all_financial_transactions,deptlabel,character varying,16383,NULL,NULL,14
+historic_all_financial_transactions,accountcd,character varying,16383,NULL,NULL,15
+historic_all_financial_transactions,accountlabel,character varying,16383,NULL,NULL,16
+historic_all_financial_transactions,termcd,character varying,16383,NULL,NULL,17
+historic_all_financial_transactions,termlabel,character varying,16383,NULL,NULL,18
+historic_all_financial_transactions,programcd,character varying,16383,NULL,NULL,19
+historic_all_financial_transactions,programlabel,character varying,16383,NULL,NULL,20
+historic_all_financial_transactions,projectcd,character varying,16383,NULL,NULL,21
+historic_all_financial_transactions,projectlabel,character varying,16383,NULL,NULL,22
+historic_all_financial_transactions,fiscal_year_id,integer,NULL,32,0,23
+ministudentdetailsandstatushistory,program groupings key,character varying,16412,NULL,NULL,1
+ministudentdetailsandstatushistory,fiscal_year,character varying,16383,NULL,NULL,2
+ministudentdetailsandstatushistory,book,character varying,16383,NULL,NULL,3
+ministudentdetailsandstatushistory,gl_program_cd,character varying,28,NULL,NULL,4
+ministudentdetailsandstatushistory,gp_db_name,character varying,16383,NULL,NULL,5
+ministudentdetailsandstatushistory,program name,character varying,16383,NULL,NULL,6
+ministudentdetailsandstatushistory,application status,character varying,9,NULL,NULL,7
+ministudentdetailsandstatushistory,enrollment type,character varying,21,NULL,NULL,8
+ministudentdetailsandstatushistory,term_category,character varying,16383,NULL,NULL,9
+ministudentdetailsandstatushistory,term_cd,character varying,2,NULL,NULL,10
+ministudentdetailsandstatushistory,term_length,character varying,16383,NULL,NULL,11
+ministudentdetailsandstatushistory,student_term_admit_id,integer,NULL,32,0,12
+ministudentdetailsandstatushistory,student_status_type,character varying,16383,NULL,NULL,13
+program_groupings,gl_program_cd,character varying,16383,NULL,NULL,1
+program_groupings,gl_program_name,character varying,16383,NULL,NULL,2
+program_groupings,gp_db_name,character varying,16383,NULL,NULL,3
+program_groupings,glprogramcategory,character varying,8,NULL,NULL,4
+program_groupings,incomestatement,character varying,13,NULL,NULL,5
+program_groupings,businessline,character varying,7,NULL,NULL,6
+program_groupings,programmodel,character varying,27,NULL,NULL,7
+slicer_fxbookrates,book,character varying,16383,NULL,NULL,1
+slicer_fxbookrates,bookindex,bigint,NULL,64,0,2
